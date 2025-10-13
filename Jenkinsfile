@@ -6,21 +6,23 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout from GitHub') {
             steps {
-                sshagent(['github-ssh']) {
+                sshagent(['github-credentials']) {
                     git branch: 'main', url: 'git@github.com:bilalsafdar4989/Project.git'
                 }
             }
         }
 
-        stage('Build and Deploy using Docker Compose') {
+        stage('Deploy using Docker Compose') {
             steps {
                 sh '''
                 cd ${WORKSPACE}
+                echo "🚀 Starting deployment..."
                 docker compose down || true
                 docker compose build
                 docker compose up -d
+                echo "✅ Deployment completed!"
                 '''
             }
         }
@@ -28,10 +30,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment successful!'
+            echo '✅ Build and deployment successful!'
         }
         failure {
-            echo '❌ Deployment failed!'
+            echo '❌ Build failed!'
         }
     }
 }
