@@ -2,27 +2,24 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_PATH = "/opt/GreenX_DCS_Assesment_Tool-main"
+        COMPOSE_FILE = 'docker-compose.yml'
     }
 
     stages {
-        stage('Checkout from GitHub') {
+        stage('Clone Repository') {
             steps {
-                sshagent(['github-credentials']) {
-                    git branch: 'main', url: 'git@github.com:bilalsafdar4989/Project.git'
-                }
+                echo '📦 Cloning from GitHub...'
+                git branch: 'main', url: 'https://github.com/YourUsername/YourRepo.git'
             }
         }
 
-        stage('Deploy using Docker Compose') {
+        stage('Build and Deploy with Docker Compose') {
             steps {
+                echo '🚀 Deploying application using Docker Compose...'
                 sh '''
-                cd ${WORKSPACE}
-                echo "🚀 Starting deployment..."
-                docker compose down || true
-                docker compose build
-                docker compose up -d
-                echo "✅ Deployment completed!"
+                    docker compose down
+                    docker compose build
+                    docker compose up -d
                 '''
             }
         }
@@ -30,10 +27,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Build and deployment successful!'
+            echo '✅ Deployment successful!'
         }
         failure {
-            echo '❌ Build failed!'
+            echo '❌ Deployment failed!'
         }
     }
 }
