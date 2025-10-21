@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ./greenX-assessment-tool-frontend
+    image: bilal637/greenx-frontend:latest
+
+  backend:
+    build:
+      context: ./GreenX_DCS_Assesment_Tool_Backend
+    image: bilal637/greenx-backend:latest
