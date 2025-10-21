@@ -1,5 +1,5 @@
- Ignore the .env file
+#Ignore the .env file
 .env
 
-Ignore the myenv directory
+#Ignore the myenv directory
 myenv/
