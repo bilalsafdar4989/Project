@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  frontend:
+    image: bilal637/greenx-frontend:latest
+    container_name: frontend_app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://backend:8000/api/v2
+    depends_on:
+      - backend
+    networks:
+      - greenx-network
+
+  backend:
+    image: bilal637/greenx-backend:latest
+    container_name: backend_app
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./GreenX_DCS_Assesment_Tool_Backend/.env
+    depends_on:
+      - mysql_db
+    networks:
+      - greenx-network
+
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: greenx
+      MYSQL_USER: greenx
+      MYSQL_PASSWORD: greenx
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - greenx-network
+
+volumes:
+  mysql_data:
+
+networks:
+  greenx-network:
+    driver: bridge
