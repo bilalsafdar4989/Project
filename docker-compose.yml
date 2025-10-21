@@ -2,9 +2,7 @@ version: "3.9"
 
 services:
   frontend:
-    build:
-      context: ./greenX-assessment-tool-frontend
-      dockerfile: Dockerfile
+    image: bilal637/greenx-frontend:latest
     container_name: frontend_app
     ports:
       - "3000:3000"
@@ -17,9 +15,7 @@ services:
       - greenx-network
 
   backend:
-    build:
-      context: ./GreenX_DCS_Assesment_Tool_Backend
-      dockerfile: Dockerfile
+    image: bilal637/greenx-backend:latest
     container_name: backend_app
     ports:
       - "8000:8000"
@@ -52,4 +48,3 @@ volumes:
 networks:
   greenx-network:
     driver: bridge
-
